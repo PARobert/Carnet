@@ -1,0 +1,780 @@
+\documentclass[12pt,a4paper,article]{carnet}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,textcomp}
+\usepackage[french]{babel}
+\usepackage{apacite}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{titletoc, titlesec, titling}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{enumitem}
+\usepackage{multicol,multirow}
+\usepackage{xcolor}
+\usepackage{lscape}
+\usepackage{extramarks}
+\usepackage{ifthen}
+\usepackage{chngpage}
+
+%---- Chemin d'accès
+\graphicspath{{Images/}}        % Chemin d'accès aux graphiques
+
+%-- Mise en page
+\geometry{hmargin=3cm, vmargin=3.5cm} % Réglage des marges
+\setlength{\parskip}{0.4cm}  % Interligne entre paragraphes
+\setlength{\textwidth}{.7\paperwidth} % Largeur du texte
+\renewcommand{\baselinestretch}{1} % Interligne
+
+%-- Changement des marges à la volée
+\newenvironment{changemargin}[2]{%
+  \begin{list}{}{%
+      \setlength{\topsep}{0pt}%
+      \setlength{\leftmargin}{#1}%
+      \setlength{\rightmargin}{#2}%
+      \setlength{\listparindent}{\parindent}%
+      \setlength{\itemindent}{\parindent}%
+      \setlength{\parsep}{\parskip}%
+    }%
+  \item[]}{\end{list}}
+
+%-- Mise en forme de l'en-tête et du pied de page
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[C]{} 
+\fancyhead[L]{}
+\fancyhead[R]{}
+
+\renewcommand{\footrulewidth}{0.2pt}
+\fancyfoot[C]{} 
+\fancyfoot[L]{\small\sectiontitle}
+\fancyfoot[R]{\small\thepage}
+
+%-- Mise en forme des titres chapitres
+\setcounter{secnumdepth}{3}     % 2
+\setcounter{tocdepth}{1}        % 2
+
+\newrobustcmd{\icon}[1]{\includegraphics[height=14pt]{#1}}
+\newcommand{\sectiontitle}{}
+\newcommand{\newsection}[1]{
+\begin{changemargin}{0ex}{0cm}
+\noindent\icon{croix}\hspace{4ex}{\LARGE\bfseries #1}
+\addcontentsline{toc}{section}{#1}
+\end{changemargin}
+\renewcommand{\sectiontitle}{#1}
+\vspace{8ex}}
+
+\renewcommand{\thesubsection}{} % Modification du titre de sous section
+\renewcommand{\thesubsubsection}{\arabic{subsection}.\arabic{subsubsection}} % Modification du titre de sous section
+
+% \titlespacing*{\section}%
+% 	{}%
+% 	{0cm}%
+% 	{.75cm}%
+% \titlespacing*{\subsection}%
+% 	{}%
+% 	{0cm}%
+% 	{.75cm}%
+% \titlespacing*{\subsubsection}%
+% 	{}%
+% 	{.5cm}%
+% 	{.75cm}%
+
+%-- Mise en forme du cérémonial
+\newlength{\retrait}
+\setlength{\retrait}{3.5ex}
+
+\newcommand{\R}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.2ex}
+  \noindent\textcolor{red}{\bfseries{Le routier :}}\par
+  \vspace{0.2ex}
+  \nobreak
+  \extramarks{}{}
+  \nobreak
+  \begin{changemargin}{\retrait}{0ex}
+  #1\par
+  \end{changemargin}
+  \extramarks{\noindent\textcolor{red}{\bfseries{Le routier :}} (suite)}{}
+}
+
+\newcounter{CCcount}
+\setcounter{CCcounter}{1}
+\newcommand{\CC}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.2ex}
+  \noindent\ifthenelse{\value{CCcount} > 1}{\textcolor{red}{\bfseries{Le C.C. :}}}{\textcolor{red}{\bfseries{Le Chef de Clan :}}}\par
+  \vspace{0.2ex}
+  \nobreak
+  \extramarks{}{}
+  \nobreak
+  \begin{changemargin}{\retrait}{0ex}
+  #1\par
+  \end{changemargin}
+  \extramarks{\noindent\textcolor{red}{\bfseries{Le C.C. :}} (suite)}{}
+  \addtocounter{CCcount}{1}
+}
+
+\newcommand{\A}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.2ex}
+  \noindent\textcolor{red}{\bfseries{L'aumônier :}}\par
+  \vspace{0.2ex}
+  \nobreak
+  \extramarks{}{}
+  \nobreak
+  \begin{changemargin}{\retrait}{0ex}
+  #1\par
+  \end{changemargin}
+  \extramarks{\noindent\textcolor{red}{\bfseries{L'aumônier}} \textit{(suite)}}{}
+}
+
+\newcounter{CGcount}
+\setcounter{CGcounter}{1}
+\newcommand{\CG}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.2ex}
+  \noindent\ifthenelse{\value{CGcount} > 1}{\textcolor{red}{\bfseries{Le C.G. :}}}{\textcolor{red}{\bfseries{Le Chef de groupe :}}}\par
+  \vspace{0.2ex}
+  \nobreak
+  \extramarks{}{}
+  \nobreak
+  \begin{changemargin}{\retrait}{0ex}
+  #1\par
+  \end{changemargin}
+  \extramarks{\noindent\textcolor{red}{\bfseries{Le C.G. :}} (suite)}{}
+  \addtocounter{CGcount}{1}
+}
+
+\newcounter{CTcount}
+\setcounter{CTcounter}{1}
+\newcommand{\CT}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.2ex}
+  \noindent\ifthenelse{\value{GTcount} > 1}{\textcolor{red}{\bfseries{Le C.T. :}}}{\textcolor{red}{\bfseries{Le Chef de Troupe :}}}\par
+  \vspace{0.2ex}
+  \nobreak
+  \extramarks{}{}
+  \nobreak
+  \begin{changemargin}{\retrait}{0ex}
+  #1\par
+  \end{changemargin}
+  \extramarks{\noindent\textcolor{red}{\bfseries{Le C.T. :}} (suite)}{}
+  \addtocounter{CTcount}{1}
+}
+
+\newcommand{\T}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.2ex}
+  \noindent\textcolor{red}{\bfseries{Tous :}}\par
+  \vspace{0.2ex}
+  \nobreak
+  \extramarks{}{}
+  \nobreak
+  \begin{changemargin}{\retrait}{0ex}
+  #1\par
+  \end{changemargin}
+  \extramarks{\noindent\textcolor{red}{\bfseries{Tous}} \textit{(suite)}}{}
+}
+
+\newcommand{\comment}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.5ex}\par
+  \extramarks{}{}
+  \textcolor{red}{\textit{#1}}\par
+  \extramarks{}{}
+  \vspace{1.2ex}
+}
+
+\newcommand{\commentb}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.5ex}\par
+  \extramarks{}{}
+  \textit{#1}\par
+  \extramarks{}{}
+  \vspace{1.2ex}
+}
+
+\newcommand{\suite}[1]{%
+  \setlength{\parskip}{0cm}
+  \vspace{1.2ex}
+  \nobreak
+  \begin{changemargin}{\retrait}{0ex}
+  #1\par
+  \end{changemargin}
+}
+
+
+%-- Corps du texte
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Page de titre
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Version pour internet
+\begin{center} 
+{\tiny .} \\
+\vspace{\stretch{2}}
+\textbf{\LARGE Cérémonial}\\
+\vspace{\stretch{.5}}
+\\
+\vspace{\stretch{2}}
+\includegraphics[scale=.4]{aillettesjpeg}\\
+\vspace{\stretch{1,5}}
+2016\\
+\vspace{\stretch{2}}
+\newline
+\\
+\end{center}
+\thispagestyle{empty}
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%
+% Le mot du CC
+%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\textit{Le mot du chef...}
+
+\thispagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%
+% La progression
+%%%%%%%%%%%%%%%%%%%
+\newpage
+\setcounter{page}{1}
+\newsection{La progression au Clan}
+\setlength{\parskip}{0.1cm}  % Interligne entre paragraphes
+
+Le cérémonial, c'est d'abord le moment solennel où le routier prends un engagement devant les autres. Pour cela, on donne des formes aux gestes et aux paroles, pour exprimer le sens et ne pas se noyer dans l'improvisation.
+
+Par extension, on appelle aussi cérémonial, le recueil de ces formes, des pratiques usuelles, des repères fondamentaux qui nous permettent de prendre du recul sur nos pratiques.
+
+Tout groupe a besoin d'us et coutumes. La route aussi. Pour autant, le cérémonial de la route est fait pour le routier, et non l'inverse. À nous de puiser dedans pour enrichir, orienter notre scoutisme aîné.
+
+Avant de commencer, voici reproduit les trois principes du cérémonial de la route \textsc{Suf} : il y a un cérémonial de la route ; la route n'est pas cérémonieuse pour autant ; quant un routier fait, il fait bien et beau.
+
+\subsection{Notre uniforme}
+
+C'est une marque de respect et d'humilité de la part du routier que de porter l'uniforme du mouvement. L'uniforme comprend : chapeau quatre-bosses avec croix de promesse métallique, foulard routier \textsc{Suf} avec bague en cuir, chemise beige avec insignes cousus, chandail bleu marine avec insignes cousus, pantalon en velours côtelé beige, bermuda lorsqu'on part à l'aventure, ceinturon cuir avec boucle \textsc{Suf}, chaussettes aux couleurs sobres, chaussures sobres adaptées à l'activité.
+
+Pour les longues marches on adopte l'uniforme suivant : chapeau quatre-bosses avec croix de promesse métallique, maillot ou polo blanc, foulard, bermuda beige.
+
+Le comportement est aussi important que l'uniforme. Le routier a le regard clair, l'allure énergique, le visage souriant.
+
+\subsection{L'organisation du Clan}
+
+
+
+\subsection{La progression}
+\setlength{\parskip}{0cm}  % Interligne entre paragraphes
+\begin{changemargin}{1cm}{1cm}
+{\small\noindent \textit{\og On ne le répètera jamais assez, la route est une question de sur mesure.\fg{}}
+\begin{flushright}
+\noindent Édouard de \textsc{Macédo}, premier CNR SdF,
+
+\noindent in \textit{Le manuel du chef de clan}.
+\end{flushright}}
+\end{changemargin}
+\setlength{\parskip}{0.1cm}  % Interligne entre paragraphes
+
+La progression routier est d'abord une prise en main de sa progression et de sa propre vie.
+
+%%%%%%%%%%%%%%%%%%%
+% La montée au clan
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{La montée au Clan}
+
+\comment{Le Chef de Troupe appelle le scout qui monte, lui adresse un mot d'adieu. Puis le scout se tourne vers la troupe. Le Chef de Patrouille peut à cette occasion remettre son staff à son successeur ou à son chef. Puis se tourne vers les éclaireurs.}
+\CT{Scouts, saluez !}
+\comment{La maîtrise s'écarte. L'Assistant Chef de Clan ou le Chef d'Équipe l'attend à la sortie du carré, prend le sac du scout et l'accompagne devant la maîtrise de Clan.}
+\CC{Routiers, saluez !\\
+\textcolor{red}{N...},\\ 
+Au Clan, les routiers se dépassent dans l'aventure.\\
+Au Clan, les routiers se mettent au service de leur prochain,\\
+Au Clan, les routiers prennent la suite du Christ, Route véritable.\\
+Veux-tu prendre la Route avec nous ?}
+\R{Oui, je le veux.}
+\CC{Rejoins l'équipe \textcolor{red}{E...}.}
+\comment{Le routier salue la maîtrise et prends place dans le rassemblement. Puis le rassemblement est rompu et le Clan part à l'aventure. On chante un chant de circonstance, avant ou après la rupture du rassemblement.}
+
+%%%%%%%%%%%%%%%%%%%
+% Prise de foulard
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{La prise de foulard}
+
+\comment{La prise de foulard est un premier engagement, celui d'être membre du Clan et de suivre et de s'impliquer dans les activités du Clan tout au long de l'année. Cet engagement est nécessaire pour poursuivre l'aventure avec le Clan. On ne distribue pas les foulards à qui veux, c'est pourquoi on s'efforce de faire vivre une vrai activité de route avant l'engagement au Clan.}
+\CC{\textcolor{red}{N...}, maintenant que tu a marché avec nous et pris connaissance de notre charte, t'engages-tu à être membre du Clan \textcolor{red}{C...} ?}
+\R{Oui, chef.}
+\CC{Comment ?}
+\R{En m'impliquant dans les activités du Clan, en observant la loi scoute et en suivant la progression routier.}
+\CC{Reçois ce foulard, signe de reconnaissance des scouts du monde entier, il montre à tous que tu es un routier en marche. \\
+Sache qu'il ne doit pas être porté par un lâche, ni toucher terre.}
+\R{Je maintiendrai.}
+\comment{Le C.C. remet le foulard.}
+\CC{Reçois cette bande de Clan, elle montrera a tous que tu fais désormais partie du Clan \textcolor{red}{C...}.}
+\comment{Le C.C. remet la bande de Clan puis salue le nouveau routier :}
+\suite{Bienvenue au clan.}
+
+%%%%%%%%%%%%%%%%%%%
+% Le compagnonage
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{L'engagement Compagnon Routier}
+
+\comment{RAJOUTER UN PETIT TEXTE D'INTRO}
+\CC{\textcolor{red}{N...}, tu veux devenir routier. Pourquoi ?}
+\R{Pour apprendre à vivre en scout, adulte et serviteur.}
+\CC{Comment ?}
+\R{En vivant la Route à travers les activités du clan et en cheminant personnellement vers le Départ Routier.}
+\CC{Quels moyens concrets prends-tu pour y arriver ?}
+\R{Pour m'aider à progresser, je choisis l'itinéraire de compagnonnage avec toi \textcolor{red}{N...} et le père \textcolor{red}{P...} et je prends les engagements concrets suivant :}
+\comment{Le routier énumère ses engagements (service, raid de compagnonnage, sacrement, etc.)}
+\CC{Sois routier en marche dans la communauté du clan.\\
+Reçois cet insigne Compagnon-Routier, signe visible de ton engagement.}
+\comment{Le C.C. remet la barrette.}}
+\CC{Reçois ce flot brun, couleur de l'humilité, pour te rappeler que cette vertu doit guider ton service.}
+\comment{Le C.C. remet le flot d'épaule brun, l'aumônier lit l'évangile des pèlerins d'Emmaüs puis bénit le routier. On chante la prière scout ou la prière du routier.}
+
+\newpage
+
+\vspace{1cm}
+
+\setlength{\parskip}{0cm} 
+\noindent \textbf{Évangile des compagnons d'Emmaüs}.\par
+\noindent \textit{Selon St Luc 24, 13-35}.
+\setlength{\parskip}{0.4cm} 
+
+\vspace{3ex}
+
+Le troisième jour après la mort de Jésus, deux disciples faisaient route vers un village appelé Emmaüs, à deux heures de marche de Jérusalem, et ils parlaient ensemble de tout ce qui s'était passé. Or, tandis qu'ils parlaient et discutaient, Jésus lui-même s'approcha, et il marchait avec eux. Mais leurs yeux étaient aveuglés et ils ne le reconnaissaient pas. Jésus leur dit : \og De quoi causiez-vous donc ? \fg{} Alors ils s'arrêtèrent, tout tristes.
+
+L'un deux, nommé Cléophas, répondit : \og Tu es bien le seul de tous ceux qui étaient à Jérusalem à ignorer les événements de ces jours-ci ! \fg{} Il leur dit : \og Quels événements ? \fg{} Ils lui répondirent : \og Ce qui est arrivé à Jésus de Nazareth : cet homme était un prophète puissant par ses actes et ses paroles devant Dieu et devant tout le peuple. Les chefs des prêtres et nos dirigeants l'ont livré, ils l'ont fait condamner à mort et ils l'ont crucifié. \fg{}
+
+Et nous qui espérions qu'il serait le libérateur d'Israël ! Avec tout cela, voici déjà le troisième jour qui passe depuis que c'est arrivé ! à vrai dire, nous avons été bouleversés par quelques femmes de notre groupe. Elles sont allées au tombeau de très bonne heure et elles n'ont pas trouvé son corps ; elles sont même venue nous dire qu'elles avaient eu une apparition : des anges qui le disaient vivant. Quelques-uns de nos compagnons sont allés au tombeau et ils ont trouvé les choses comme les femmes l'avaient dit ; mais lui, ils ne l'ont pas vu.
+
+Il leur dit alors : \og Vous n'avez donc pas compris ! Comme votre cœur est lent à croire tout ce qu'ont dit les Prophètes ! Ne fallait-il pas que le Messie souffrît tout cela pour entrer dans sa gloire ? \fg{} Et, en partant de Moïse et de tous les Prophètes, il leur expliqua, dans toute l'écriture, ce qui le concernait.
+
+Quand ils approchèrent du village où ils se rendaient, Jésus fit semblant d'aller plus loin. Mais ils s'efforcèrent de le retenir. \og Reste avec nous : le soir approche et déjà le jour baisse. \fg{} Il entra donc pour rester avec eux. Quand il fut à table avec eux, il prit le pain, dit la bénédiction, le rompit et le leur donna. Alors leurs yeux s'ouvrirent, et ils le reconnurent, mais il disparut à leurs regards. Alors ils se dirent l'un à l'autre : \og Notre cœur n'était-il pas si brûlant en nous tandis qu'il nous parlait sur la route, et qu'il faisait comprendre les écritures ? \fg{} 
+
+À l'instant même, ils se levèrent et retournèrent à Jérusalem.
+
+\vspace{\stretch{0.5}}
+
+%%%%%%%%%%%%%%%%%%%
+% Le départ
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{Le départ Routier Scout}
+
+\comment{RAJOUTER UN PETIT TEXTE D'INTRO}
+\R{Chef, s'il plaît à Dieu et à vous-même, je demande à devenir Routier Scout.}
+\CC{Bien, frère Scout, tu veux mener ta vie à la manière et dans l'esprit des routiers. Avant de recevoir ton engagement, je vais te rappeler les principales exigences de la Route.\par
+As-tu compris que pour avoir accès à la Route, il faut commencer par sortir de ta maison et de toi-même, renoncer à ton égoïsme, à ton confort, à ta sécurité, et t'imposer une discipline de vie ?}
+\R{Oui.}
+\CC{Veux-tu demeurer viril et sobre, n'être esclave ni de tes caprices, ni de ton confort et avoir toute ta vie une âme de pauvre ?}
+\R{Je le veux.}
+\CC{As-tu compris qu'on n'est sur la Route que pour marcher en avant ?\par
+Es-tu décidé à faire de ta vie un progrès perpétuel en esprit chrétien, en force de caractère, en droiture, dévouement, pureté et à faire en toutes choses aujourd'hui mieux qu'hier et demain mieux qu'aujourd'hui ?}
+\R{Oui.}
+\CC{As-tu compris par notre amour de la nature et du camp, qu'un routier ne se paie pas de mots ?\par
+Promets-tu de conformer tes actes et tes pensées aux exigences du réel ?}
+\R{Je le promets.}
+\CC{As-tu compris, par la communion à la joie et à la peine des hommes que nous recherchons dans nos entreprises et nos services, que la vie est à prendre au sérieux, que tout acte d'un routier compte et engage ?}
+\R{Oui.}
+\CC{As-tu compris, à travers nos activités et nos chapitres, qu'un routier a l'amour passionné de la vérité, qu'il ne se contente pas d'à-peu-près, ou de la possession tranquille des vérités toutes faites ?\par
+Veux-tu, en toute choses, rechercher humblement la Vérité et librement la servir, sans écraser autrui sous le poids de ta découverte ?}
+\R{Je le veux.}
+\CC{As-tu compris, à travers l'amitié fraternelle et les rencontres que tu fais chaque jour, que tout homme est un être unique, et que dans les plus disgraciés comme dans les plus obscurs, lui une étincelle divine qui mérite ton amour ?\par
+Es-tu prêt à ne mépriser personne, à t'entretenir fraternellement avec chacun, à apprendre de tous ?}
+\R{Oui.}
+\CC{As-tu compris, à travers tes défaillances, que tu n'as pas à condamner les hommes, mais que tu leur dois la bienveillance que Dieu Lui-même te prodigue ?\par
+Promets-tu de rechercher dans les autres, pour la gloire de Dieu, ce qu'ils ont de bon et de les aimer, pour Son amour ?}
+\R{Oui.}
+\CC{En débouchant sur la Route, sais-tu que tu es toujours de service, que tu consens d'avance au don de toi-même au service de Dieu et de tes frères les hommes ?\\\par
+Es-tu prêt à servir ?}
+\R{Je servirai.}
+\CC{Que Dieu te donne la grâce de persévérer dans ton engagement.\par
+Que le péché, les désillusions, l'argent et les honneurs n'émoussent pas ta vocation.\par
+Que grâce à Dieu, tu restes toujours jeune !}
+\R{Je sais que la grandeur de l'homme est la fidélité. Connaissant ma faiblesse, je demande à Dieu Sa grâce et m'engage à vivre en Routier-Scout.}
+\CC{Entre donc en Routier-Scout dans une communauté d’hommes et renouvelle ta promesse de Scout en sachant désormais que sur ta parole on doit pouvoir bâtir une cité.}
+\comment{On déploie l'Étendard ou le drapeau français face au routier.}
+\suite{Scouts, saluez !}
+\R{J'ai promis :\par
+Sur mon honneur, avec le grâce de Dieu,\par
+De servir de mon mieux Dieu, l'Église et ma patrie,\par
+D'aider mon prochain en toute circonstances\par
+Et d'observer la loi scoute.\par
+Je promets en outre d'aider de tout mon pouvoir le mouvement scout.}
+\CC{Reçois cet insigne qui montrera à tous que tu es Routier-Scout.}
+\comment{Le Chef lui fixe la barrette R.S. sur la poitrine.}
+\CC{Reçois ce bâton fourchu, image du bien et du mal entre lesquels tu auras à choisir et, pour Dieu, choisis toujours bien.}
+\comment{Le routier prend la fourche de la main droite.}
+\CC{Reçois cette hache, symbole de la volonté qui t'ouvrira un chemin à travers les difficultés, et si jamais, pour marcher à Dieu, la Route te manque, fais-la.}
+\comment{Le routier prend la hachette dans sa gaine, à la ceinture.}
+\CC{Reçois cette flamme qui dissipe les ténèbres de ta route. Cherche et rayonne la vérité, car en toi vit le Seigneur, Lumière du monde.}
+\comment{Le C.C. remet une torche allumée.}
+\CC{Reçois ces flots, portés par tous les routiers du monde. Ils évoquent ce qui, en toi, de chaque âges, ne doit jamais mourir :\par
+\newline
+\begin{itemize}
+\item Jaune, couleur des louveteaux, couleur du soleil, pour que ta joie illumine ceux qui t'entourent ;
+\item Vert, couleur des éclaireurs, de tout ce qui grandit, pour que l'espérance toujours t'entraîne plus loin ;
+\item Rouge, couleur des routiers, couleur du sang et de l'amour, pour que tu n'épargnes ni l'un ni l'autre au long des jours que Dieu te donnera.\par
+\end{itemize}
+\par Jaune, vert, rouge, pour te rappeler à tous instants qu'en toi doit vivre tout le Scoutisme et qu'un Routier est un Scout complet\par
+\newline
+Un Routier-Scout qui n’a pas tout donné, n’a rien donné.\par
+Un Routier-Scout qui ne sait pas mourir n’est bon à rien.\par
+Mais souviens-toi qu’il est parfois tout aussi difficile de vivre.\par
+\newline
+Et maintenant, tu peux partir, la Route est ouverte.}
+\comment{Le Routier s'avance vers l'aumônier et se découvre.}
+\R{Père, je ne partirai que vous ne m'ayez béni.}
+\A{Heureux ceux qui ont un cœur de pauvre, car le Royaume des Cieux est à eux.\par
+Heureux ceux qui pleurent, car ils seront consolés.\par
+Heureux ceux qui sont doux, car ils posséderont la terre.\par
+Heureux ceux qui ont faim et soif de justice, car ils seront rassasiés.\par
+Heureux les miséricordieux, car ils obtiendront miséricorde.\par
+Heureux ceux qui ont le cœur pur, car ils verront Dieu.\par
+Heureux les artisans de paix, car ils seront appelés fils de Dieu.\par
+Heureux ceux qui sont persécutés pour la justice, car le Royaume des Cieux est à eux.\par
+\newline
+Heureux serez-vous quand on vous maudira, qu'on dira faussement de vous toute sorte de mal à cause de Moi...\par
+\newline
+Ces paroles de Vie, ne les garde pas pour toi ; annonce la Bonne Nouvelle du Royaume de Dieu. Tous les dons de la grâce et de la nature, tu les as reçus gratuitement ; passe-les aux autres gratuitement. Donne à manger à ceux qui ont faim, à boire à ceux qui ont soif, l'hospitalité à qui frappe à ta porte, un vêtement à ceux qui n'en ont pas ; visite les malades, assiste ceux qui sont en prison ; de telle sorte que Notre-Seigneur puisse dire que celui qui te reçoit, Le reçoit Lui-même.\par
+\newline
+Sois prudent comme le serpent et pur comme la colombe ; et si tu es persécuté pour Jésus-Christ, ne prépare rien pour ta défense, c'est l'Esprit du Père qui parlera en toi.}
+\comment{Le routier s'agenouille.}
+\A{Que Notre-Dame de la Route te guide ; que l'Archange Raphaël te protège ; que Saint Jacques et Saint Paul t'escortent, et que la bénédiction du Dieu tout-puissant Père, Fils et Saint Esprit, descende sur toi et y demeure à jamais.}
+\R{Amen.}
+\A{Pars maintenant à la suite du Christ et rayonne la paix et la joie.}
+\comment{Le routier se relève et se coiffe. Le parrain donne alors l'accolade au nom du Clan.}
+\CC{Bonne route frère ! À Dieu vat !}
+\comment{La Maîtrise et les Routiers s'écartent et ouvrent la Route laissant le nouveau Routier passer sur la route libre. Le C.C. Entonne l'Appel de la Route. Le Clan chante les couplets et laisse le nouveau Routier, chanter le refrain en s'éloignant.}
+
+\newpage
+\vspace{1cm}
+
+\setlength{\parskip}{0cm} 
+\noindent \textbf{L'appel de la Route}.\par
+\noindent \textit{Paroles : Eugène-Jean REGRETTIER}.
+\setlength{\parskip}{0.4cm} 
+
+\vspace{3ex}
+
+{\footnotesize
+\begin{center}
+\begin{changemargin}{-2.5cm}{0cm}
+\noindent\begin{tabular}{l l l l l l l l}
+R. &  Ohé, garçon, garçon ! & & & & & & \\
+ & Toi qui cherches, toi qui doutes, & & & & & & \\
+ & Prête l’oreille à ma chanson, & & & & & & \\
+ & Entends l’Appel de la Route. & & & & & & \\
+ & & & & & & \\
+ & & & & & & \\
+1. & Elle est là devant ta maison, & & 3. & Si ton cœur parfois s’est ému, & & 5. & Quand la nuit aura, dans les bois,\\
+ & Comme une amie, & & & Pour de grands rêves, & & & Fait le silence.\\
+ & Et pendant la belle saison, & & & Si tu veux les fières vertus & & & Tu t’endormiras sans émoi,\\
+ & Toute fleurie, & & & Qui nous soulèvent, & & & Plein d’espérance,\\
+ & Elle fuite jusqu’à l’horizon, & & & Bien loin des sentiers rebattus, & & & Et la voix du Seigneur, en toi,\\
+ & D’une fuite infinie. & & & Suis la Route sans trêve. & & & Sera ta récompense.\\
+ & & & & & & \\
+2. & C’est la route des paladins, & & 4. & Tu sauras les secrets nombreux, & & \\
+ & Route guerrière. & & & De cette Route, & & & \\
+ & Elle a vue la marche des saints & & & Les calvaires dressés aux cieux, & & & \\
+ & Vers la lumière, & & & Je servirai. & & & \\
+ & Et leurs pas sont encore empreints & & & Tu seras, pour l’amour des gueux, & & & \\
+ & Dans sa vieille poussière. & & & Chaque jour aux écoutes. & & & \\
+\end{tabular}
+\end{changemargin}}
+
+\vspace{2cm}
+
+\lilypondfile[noindent,quote, line-width=\textwidth]{Depart.ly}
+% \noindent\includegraphics[scale=.71]{partitionRS}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%
+% L'investiture
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{L'investiture du Chef de Clan}
+
+\comment{RAJOUTER UN PETIT TEXTE D'INTRO}
+\CG{\textcolor{red}{X...}}
+\comment{Le Chef avance au centre.}
+\suite{Acceptes-tu le commandement du clan \textcolor{red}{C...}?}
+\CC{Oui, Chef.}
+\CG{L'acceptes-tu pour servir et sais-tu que c'est charge d'âmes que tu veux prendre ?}
+\CC{Oui, je la prendrai sans crainte avec la grâce de Dieu.}
+\CG{Bien, promets ce que tu dois promettre.}
+\comment{L'Étendard est abaissé face au futur chef de clan.}
+\suite{Scouts, saluez !}
+\comment{Le Chef lève la main droite au Salut Scout :}
+\CC{Je m'engage comme Chef, à remplir fidèlement mes devoirs de baptisé, à observer et à faire observer la loi scoute et les méthodes du mouvement des Scouts Unitaires de France et à suivre loyalement les ordres qui me seront donnés par mes chefs.}
+\CG{Les Scouts Unitaires de France te reconnaissent Chef de Clan, en signe de quoi je te remets la barrette de ton rang.}
+\comment{On peut prendre un chant de circonstance tel le chant de la promesse ou la prière du routier.}
+
+%%%%%%%%%%%%%%%%%%%
+% L'investiture
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{La messe d'investiture du Chef de Clan}
+
+
+%%%%%%%%%%%%%%%%%%%
+% La promesse
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{La Promesse}
+
+\comment{RAJOUTER UN PETIT TEXTE D'INTRO}
+\CC{Que veux-tu ?}
+\R{Devenir scout.}
+\CC{Pourquoi ?}
+\R{Pour apprendre à mieux servir Dieu et mon prochain.}
+\CC{Combien de temps ?}
+\R{S'il plaît à Dieu, toujours.}
+\CC{Quel avantage matériel en attends-tu ?}
+\R{Aucun.}
+\CC{Quelle est la première exigence du scout ?}
+\R{Rendre chaque jour un service à quelqu'un.}
+\CC{Quelles sont les principales vertus du scout ?}
+\R{Franchise, Dévouement, Pureté.}
+\CC{Connais-tu la loi et les principes des Scouts Unitaires de France ?}
+\R{Oui.}
+\CC{Récitons les ensemble.}
+\T{Le scout est fier de sa foi et lui soumet toute sa vie\par
+Le scout est fils de France et bon citoyen\par
+Le devoir du scout commence à la maison\par
+Le scout met son honneur à mériter confiance.\par
+Le scout est loyal à son pays, ses parents, ses chefs et ses subordonnés.\par
+Le scout est fait pour servir et sauver son prochain.\par
+Le scout est l'ami de tous et le frère de tout autre scout.\par
+Le scout est courtois et chevaleresque.\par
+Le scout vois dans la nature l'œuvre de Dieu, il aime les plantes et les animaux.\par
+Le scout obéit sans réplique et ne fait rien à moitié.\par
+Le scout est maître de soi, il sourit et chante dans les difficultés.\par
+Le scout est économe et prends soin du bien d'autrui.\par
+Le scout et pur dans ses pensées, ses paroles et ses actes.}
+\CC{Confiant en ta loyauté, le clan t'autorise à prononcer ta promesse et t'aidera à la respecter. Reçois auparavant la bénédiction du père.}
+\comment{Le routier s'agenouille devant l'aumônier qui le bénit, après quoi le routier se relève et salut, main gauche sur l'Étandard}
+\CC{Routier, saluez !}
+\R{Sur mon honneur, avec la grâce de Dieu, je m'engage :\par
+à servir de mon mieux Dieu, l'Église, ma Patrie,\par
+à aider mon prochain en toute circonstances,\par
+à observer la loi scoute.}
+\CC{Désormais, tu fait partie de la grande fraternité scoute.}
+\comment{Le C.C. remet le chapeau avec la croix de promesse bénite fixée dessus et salue le promettant.}
+\CC{Reçois ce foulard, signe de reconnaissance des scouts du monde entier, il montre à tous que tu es un routier en marche.\par
+Sache qu'il ne doit pas être porté par un lâche, ni toucher terre.}
+\R{Je maintiendrai.}
+\comment{Le C.C. remet le foulard.}
+\CC{Reçois cette bande de clan, elle montrera a tous que tu fais désormais partie du Clan \textcolor{red}{C...}.}
+\comment{Le C.C. remet la bande de clan. On chante le chant de la promesse.}
+
+\newpage
+\vspace{1cm}
+
+\setlength{\parskip}{0cm} 
+\noindent \textbf{Chant de promesse}.\par
+\noindent \textit{Paroles : P. Jacques SEVIN}.
+\setlength{\parskip}{0.4cm} 
+
+\vspace{3ex}
+
+\end{adjustwidth}
+\begin{adjustwidth}{0.025\textwidth}{0.025\textwidth}
+\begin{center}
+\begin{tabular}{l l l l l l l l}
+R. &  Je veux t'aimer sans cesse, & & & & & & \\
+ & De plus en plus, & & & & & & \\
+ & Protège ma promesse, & & & & & & \\
+ & Seigneur Jésus ! & & & & & & \\
+ & & & & & & \\
+ & & & & & & \\
+ 1. & Devant tous je m'engage & & 3. & Je jure de te suivre & & 5. & Je suis de tes apôtres,\\
+ & Sur mon honneur, & & & En fier chrétien, & & & Et chaque jour\\
+ & Et je te fais hommage & & & Et tout entier je livre & & & Je veux aider les autres\\
+ & De moi, Seigneur ! & & & Mon cœur au Tien. & & & Pour ton amour.\\
+ & & & & & & \\
+2. & Devant tous je m'engage & & 4. & Fidèle à ma Patrie & & 6. & Ta Règle a sur nous-mêmes\\
+ & Sur mon honneur, & & & Je le serai ; & & & Un droit sacré ;\\
+ & Et je te fais hommage & & & Tous les jours de ma vie, & & & Je suis faible, tu m'aimes :\\
+ & De moi, Seigneur ! & & & Je servirai. & & & Je maintiendrai !\\
+\end{tabular}
+
+\vspace{2cm}
+
+\includegraphics[scale=.71]{partitionP}
+\end{center}
+
+\end{adjustwidth}
+
+%%%%%%%%%%%%%%%%%%%
+% Prières
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{Prières}
+
+\textit{ECRIRE UNE PETITE INTR}
+
+\newpage
+\subsection{Prière du Routier}
+\commentb{La prière du routier est la principale prière dite au clan.}
+
+\begin{changemargin}{3cm}{1cm}
+Seigneur Jésus,\par
+Qui Vous offrez à nous comme la Route vivante,\par
+toute irradiée par la lumière d'en haut,\par
+Daignez Vous joindre à nous sur le chemin de la vie,\par
+comme Vous le fîtes jadis pour les Routiers d'Emmaüs.\\
+
+Donnez-nous part à Votre Esprit,\par
+afin que nous découvrions\par
+la voie de votre plus grand service,\\
+
+Et que, nourris de l'Hostie, ce vrai pain des Routiers,\par
+nous cheminions allègrement,\par
+malgré fatigue et contradictions,\par
+sur le chemin qui mène droitement\par
+à la maison du Père.\\
+
+Amen.\par
+\end{changemargin}
+
+\newpage
+\subsection{Prière du scout}
+\commentb{La prière scoute est attribuée à Saint Ignace de Loyola, retravaillée par le Père Sevin pour les Scouts de France. Elle se prononce en position du prêt, le corps droit, les mains pendantes long du corps.}
+
+\begin{changemargin}{3cm}{1cm}
+Seigneur Jésus,\par
+Apprenez-nous à être généreux,\par
+A vous servir comme vous le méritez,\par
+A donner sans compter,\par
+A combattre sans souci des blessures,\par
+A travailler sans chercher le repos,\par
+A nous dépenser sans attendre d'autre récompense\par
+Que celle de savoir\par
+Que nous faisons votre Sainte Volonté.\par
+\end{changemargin}
+
+\newpage
+\subsection{Vièrge des chemins de France}
+\commentb{RAJOUTER UN PETIT TEXTE D'INTRO}
+
+\begin{changemargin}{3cm}{1cm}
+Vierge des chemins de France, vois tes fils Routiers.\par
+Nous avons cueilli pour toi ces fleurs au long des bois.\par
+Ave !\par
+Nous sommes las, nous pauserons auprès de toi.\par
+Sur la route et pour le dur effort soutiens nos pas.\par
+Maria !\par
+Et prends nous un jour au ciel,\par
+Ô mère dans tes bras.\par
+\end{changemargin}
+
+\newpage
+\subsection{Coeur de Jésus}
+\commentb{Ce chant a également été composé par le P. Sevin. Il le concevait comme un commentaire de la Prière scoute et l'intitula "Coeur de Jésus, notre Chef, notre frère" : Prière du Scout ! Il se chante sur l'air de "O St Esprit"}
+
+\begin{changemargin}{3cm}{1cm}
+Cœur de Jésus, notre chef, notre frère,\par
+Apprenez-nous à être généreux\par
+Et dédaigneux d’un labeur mercenaire\par
+A vous servir comme on doit servir Dieu\par
+Cœur de Jésus, notre chef, notre frère\par
+Apprenez-nous à être généreux\\
+
+Apprenez-nous ce qui fait l’âme grande\par
+La noble horreur de la vulgarité\par
+Quant à l’amour, honte à qui vous marchande\par
+Apprenez-nous à donner sans compter\par
+Apprenez-nous ce qui fait l’âme grande\par
+La noble horreur de la vulgarité.\\
+
+Apprenez-nous, Maître des heures dures\par
+A travailler sans chercher le repos.\par
+A guerroyer sans souci des blessures\par
+Pour soutenir l’honneur de vos drapeaux\par
+Apprenez-nous, Maître des heures dures\par
+A travailler sans chercher le repos.\\
+
+Apprenez-nous comment on se dépense.\par
+Comment pour vous on s’use de son mieux.\par
+Sans désirer aucune récompense\par
+Que de savoir qu’on fait ce que Dieu veut\par
+Apprenez-nous comment on se dépense\par
+Comment pour vous on s’use de son mieux.\par
+\end{changemargin}
+
+%%%%%%%%%%%%%%%%%%%
+% Messe
+%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{CTcount}{1}
+\setcounter{CGcount}{1}
+\setcounter{CCcount}{1}
+\newsection{Messe}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table des matières
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\setlength{\parskip}{0cm}
+\tableofcontents
+\vspace{\stretch{1}}
+\thispagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Page de fin avec Saint Raphael et le routier.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\setlength{\parskip}{0cm}  % Interligne entre paragraphes
+\begin{center}
+{\tiny .} \\
+\vspace{\stretch{1}}
+\textbf{\og Bonne Route Frère ! A Dieu vat ! \fg}\\
+\vspace{\stretch{1}}
+\includegraphics[scale=.65]{archange2}\\
+\end{center}
+\thispagestyle{empty}
+\clearpage
+
+
+\end{document}
